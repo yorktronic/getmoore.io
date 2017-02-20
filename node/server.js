@@ -85,6 +85,14 @@ function entrypoint() {
   mongoose.connect(MONGO_URL);
 }
 
+// mongodb schema for alan's exercise
+var NameAgeSchema = new mongoose.Schema({
+	name: String,
+	age: Number,
+});
+
+var NameAge = mongoose.model('NameAge', NameAgeSchema);
+
 var shutdown_exit_code = 0;
 function shutdown(signal, value) {
   if (server != null) {
