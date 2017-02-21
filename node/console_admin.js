@@ -39,15 +39,15 @@ var path = require('path');
 var db = mongoose.connection;
 var User = mongoose.model('User');
 
-function register_user(_username, _password) {
+function register_user(username, password) {
   var user = new User();
-  user.username = _username;
-  user.setPassword(_password);
+  user.username = username;
+  user.setPassword(password);
   user.save(function(err) {
     if (err) {
       console.log('error creating user :(');
     }
-    console.log('user created: ' + _username);
+    console.log('user created: ' + username);
     process.exit(0);
   });
 }
@@ -56,9 +56,11 @@ function mongo_entrypoint() {
   mongoose.connect(mongo_url);
 }
 
+// call function once, member of object named db, and pass it two params:
+// 1 - the strong 'open'
+// 2 - the definnition for an anonymous function that represents what should be run after 'open' happens
 db.once('open', function() {
   // we're connected via mongoose
-
   const args = process.argv;
   var username=args[2];
   var password=args[3];

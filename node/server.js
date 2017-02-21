@@ -36,6 +36,7 @@ var request = require('request');
 var compression = require('compression');
 
 require('./models/User');
+require('./models/NameAge');
 require('./config/passport');
 var jwt = require('express-jwt');
 
@@ -47,6 +48,7 @@ var auth = jwt({secret: SUPERSECRETKEY, userProperty: 'payload'});
 
 var db = mongoose.connection;
 var User = mongoose.model('User');
+var NameAge = mongoose.model('NameAge');
 
 const PORT = 8080;
 const app = express();
@@ -59,6 +61,11 @@ app.use('/view', express.static( path.join(__dirname, 'static/view')));
 
 app.use(passport.initialize());
 app.use(bodyparser.json());
+
+app.param('name', function(req, res, next, name) {
+  req.name = name;
+  return next();
+});
 
 app.post('/api/login', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
@@ -77,6 +84,43 @@ app.post('/api/login', function(req, res, next) {
   })(req, res, next);
 });
 
+// create a new NameAge object and put it in mongo
+app.post('/api/nameage', auth, function(req, res, next) {
+  if (typeof req.body.name != 'string' || typeof req.body.age != 'number') {
+    return res.status(402).json({message: 'you must pass the name and age in the body, and they must be a string and number, respectively'});
+  }
+
+  var na = new NameAge();
+  na.name = req.body.name;
+  na.age = req.body.age;
+
+  na.save(function(err, _na) {
+    if (err) {
+      return res.status(501).json({message:'internal server error while trying to store new nameage doc'});
+    }
+    return res.json(_na);
+  });
+});
+
+// get *all* of the docs in the NameAge collection
+app.get('/api/nameage', auth, function(req, res, next) {
+  NameAge.find({}, function(err, name_ages) {
+    if (err) {
+      return next(err);
+    }
+    return res.json(name_ages);
+  });
+});
+
+app.get('/api/nameage/by-name/:name', auth, function(req, res, next) {
+  NameAge.find({name:req.name}, function(err, nameage) {
+    if (err) {
+      return next(err);
+    }
+    return res.json(nameage);
+  });
+});
+
 app.all('/*', function(req, res, next) {
   res.sendFile( path.join(__dirname, 'static/index.html'));
 });
@@ -85,13 +129,6 @@ function entrypoint() {
   mongoose.connect(MONGO_URL);
 }
 
-// mongodb schema for alan's exercise
-var NameAgeSchema = new mongoose.Schema({
-	name: String,
-	age: Number,
-});
-
-var NameAge = mongoose.model('NameAge', NameAgeSchema);
 
 var shutdown_exit_code = 0;
 function shutdown(signal, value) {
