@@ -37,7 +37,9 @@ var compression = require('compression');
 
 require('./models/User');
 require('./models/NameAge');
+require('./models/Pricing');
 require('./config/passport');
+
 var jwt = require('express-jwt');
 
 // load the super secret key from file
@@ -49,6 +51,7 @@ var auth = jwt({secret: SUPERSECRETKEY, userProperty: 'payload'});
 var db = mongoose.connection;
 var User = mongoose.model('User');
 var NameAge = mongoose.model('NameAge');
+var Pricing = mongoose.model('Pricing');
 
 const PORT = 8080;
 const app = express();
