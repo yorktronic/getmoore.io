@@ -84,6 +84,37 @@ app.post('/api/login', function(req, res, next) {
   })(req, res, next);
 });
 
+// PRICING FUNCTIONS
+
+// create a new Pricing object and put it in mongo
+app.post('/api/pricing', auth, function(req, res, next) {
+  if (typeof req.body.vendor != 'string' || typeof req.body.priceType != 'string' || 
+    typeof req.body.instanceType != 'string' || typeof req.body.productDescription != 'string' || 
+    typeof req.body.price != 'number' || typeof req.body.timestamp != 'date') {
+
+      return res.status(402).json({message: `type mismatch! vendor (String), 
+        priceType (String), instanceType (String), productDescription (String), 
+        price (Number), timestamp (Date)`});
+  }
+
+  var p = new Pricing();
+  p.vendor = req.body.vendor;
+  p.priceType = req.body.priceType;
+  p.instanceType = req.body.instanceType;
+  p.productDescription = req.body.productDescription;
+  p.price = req.body.price;
+  p.timestamp = req.body.timestamp;
+
+  p.save(function(err, _na) {
+    if (err) {
+      return res.status(501).json({message:'internal server error while trying to store new nameage doc'});
+    }
+    return res.json(_p);
+  });
+});
+
+// NAMEAGE FUNCTIONS
+
 // create a new NameAge object and put it in mongo
 app.post('/api/nameage', auth, function(req, res, next) {
   if (typeof req.body.name != 'string' || typeof req.body.age != 'number') {
