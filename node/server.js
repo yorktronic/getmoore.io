@@ -88,9 +88,12 @@ app.post('/api/login', function(req, res, next) {
 
 // create a new Pricing object and put it in mongo
 app.post('/api/pricing', auth, function(req, res, next) {
-  if (typeof req.body.vendor != 'string' || typeof req.body.priceType != 'string' || 
-    typeof req.body.instanceType != 'string' || typeof req.body.productDescription != 'string' || 
-    typeof req.body.price != 'number' || typeof req.body.timestamp != 'date') {
+  if (typeof req.body.vendor != 'string' || 
+    typeof req.body.priceType != 'string' || 
+    typeof req.body.instanceType != 'string' || 
+    typeof req.body.productDescription != 'string' || 
+    typeof req.body.price != 'number' || 
+    typeof req.body.timestamp != 'date') {
 
       return res.status(402).json({message: `type mismatch! vendor (String), 
         priceType (String), instanceType (String), productDescription (String), 
@@ -107,7 +110,8 @@ app.post('/api/pricing', auth, function(req, res, next) {
 
   p.save(function(err, _na) {
     if (err) {
-      return res.status(501).json({message:'internal server error while trying to store new nameage doc'});
+      return res.status(501).json({message:`internal server error while trying 
+        to store pricing doc`});
     }
     return res.json(_p);
   });
@@ -118,7 +122,8 @@ app.post('/api/pricing', auth, function(req, res, next) {
 // create a new NameAge object and put it in mongo
 app.post('/api/nameage', auth, function(req, res, next) {
   if (typeof req.body.name != 'string' || typeof req.body.age != 'number') {
-    return res.status(402).json({message: 'you must pass the name and age in the body, and they must be a string and number, respectively'});
+    return res.status(402).json({message: `you must pass the name and age in the 
+      body, and they must be a string and number, respectively`});
   }
 
   var na = new NameAge();
@@ -127,7 +132,8 @@ app.post('/api/nameage', auth, function(req, res, next) {
 
   na.save(function(err, _na) {
     if (err) {
-      return res.status(501).json({message:'internal server error while trying to store new nameage doc'});
+      return res.status(501).json({message:`internal server error while trying 
+        to store new nameage doc`});
     }
     return res.json(_na);
   });
