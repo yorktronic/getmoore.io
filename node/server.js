@@ -96,7 +96,7 @@ app.post('/api/pricing', auth, function(req, res, next) {
     typeof req.body.instanceType != 'string' || 
     typeof req.body.productDescription != 'string' || 
     typeof req.body.price != 'number' || 
-    typeof req.body.timestamp != 'date') {
+    typeof req.body.timestamp != 'string') {
 
       return res.status(402).json({message: `type mismatch! vendor (String), 
         priceType (String), instanceType (String), productDescription (String), 

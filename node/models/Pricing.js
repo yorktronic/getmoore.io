@@ -7,7 +7,7 @@ var PricingSchema = new mongoose.Schema({
 	instanceType: String,
 	productDescription: String,
 	price: Number,
-	timestamp: Date,
+	timestamp: String,
 });
 
 mongoose.model('Pricing', PricingSchema);
