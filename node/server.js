@@ -125,8 +125,7 @@ app.post('/api/pricing', auth, function(req, res, next) {
 // create a new NameAge object and put it in mongo
 app.post('/api/nameage', auth, function(req, res, next) {
   if (typeof req.body.name != 'string' || typeof req.body.age != 'number') {
-    return res.status(402).json({message: `you must pass the name and age in the 
-      body, and they must be a string and number, respectively`});
+    return res.status(402).json({message: "you must pass the name and age in the body, and they must be a string and number, respectively"});
   }
 
   var na = new NameAge();
