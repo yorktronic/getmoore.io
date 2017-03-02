@@ -100,10 +100,11 @@ app.post('/api/pricing', auth, function(req, res, next) {
 
       return res.status(402).json({message: `type mismatch! vendor (String), 
         priceType (String), instanceType (String), productDescription (String), 
-        price (Number), timestamp (Date)`});
+        price (Number), timestamp (String)`});
   }
 
   var p = new Pricing();
+  // var d = new Date(req.body.timestamp);
   p.vendor = req.body.vendor;
   p.priceType = req.body.priceType;
   p.instanceType = req.body.instanceType;
