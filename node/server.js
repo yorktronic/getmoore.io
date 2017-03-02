@@ -169,7 +169,6 @@ function entrypoint() {
   mongoose.connect(MONGO_URL);
 }
 
-
 var shutdown_exit_code = 0;
 function shutdown(signal, value) {
   if (server != null) {
