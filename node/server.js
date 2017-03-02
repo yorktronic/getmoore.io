@@ -104,7 +104,6 @@ app.post('/api/pricing', auth, function(req, res, next) {
   }
 
   var p = new Pricing();
-  // var d = new Date(req.body.timestamp);
   p.vendor = req.body.vendor;
   p.priceType = req.body.priceType;
   p.instanceType = req.body.instanceType;
@@ -112,7 +111,7 @@ app.post('/api/pricing', auth, function(req, res, next) {
   p.price = req.body.price;
   p.timestamp = req.body.timestamp;
 
-  p.save(function(err, _na) {
+  p.save(function(err, _p) {
     if (err) {
       return res.status(501).json({message:`internal server error while trying 
         to store pricing doc`});
