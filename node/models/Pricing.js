@@ -10,4 +10,4 @@ var PricingSchema = new mongoose.Schema({
 	timestamp: Date,
 });
 
-mongoose.model('PricingSchema', PricingSchema);
+mongoose.model('Pricing', PricingSchema);
