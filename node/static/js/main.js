@@ -1,6 +1,6 @@
 rapid_frontend_client = angular.module('rapid.frontend.client', ['ui.router']);
 
-rapid_frontend_client.constant('API', 'https://getmoore.io/api/');
+rapid_frontend_client.constant('API', 'https://getmoore.io/dev/alan/api/');
 
 rapid_frontend_client.config([
   '$stateProvider',
